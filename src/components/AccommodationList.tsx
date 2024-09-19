@@ -1,17 +1,19 @@
 import { getAccommodation } from '@/api/accommodation/accommodationApi';
 import { Accommodation, AccommodationListProps } from '@/lib/types/accommodation';
-import { Box, Flex, Grid, Image, Text } from '@chakra-ui/react';
-import { useEffect, useState } from 'react';
-import InfiniteScroll from 'react-infinite-scroller';
+import { Box, Grid, Image, Text } from '@chakra-ui/react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 
 const AccommodationList = ({ accommodation }: AccommodationListProps) => {
   const [accommodations, setAccommodations] = useState<Accommodation[]>([]);
   const [hasMore, setHasMore] = useState<boolean>(true);
   const [cursor, setCursor] = useState<number>(91);
+  const observerRef = useRef<IntersectionObserver | null>(null);
+  const lastElementRef = useRef<HTMLDivElement | null>(null);
 
   const location = useLocation();
   const query = new URLSearchParams(location.search);
+
   const keyword = query.get('keyword') || '';
   const start = query.get('start') || '';
   const end = query.get('end') || '';
@@ -25,7 +27,12 @@ const AccommodationList = ({ accommodation }: AccommodationListProps) => {
     setHasMore(true);
   }, [accommodation]);
 
-  const loadMore = () => {
+  /**
+   * @description loadMore 함수를 useCallback으로 감싸서 렌더링 시마다 새로운 함수를 생성하지 않도록 함
+   */
+  const loadMore = useCallback(() => {
+    if (!hasMore) return;
+
     getAccommodation(cursor, keyword, start, end, guest)
       .then((response) => {
         const newData: Accommodation[] = response.data.data.content;
@@ -40,19 +47,44 @@ const AccommodationList = ({ accommodation }: AccommodationListProps) => {
       .catch((error) => {
         console.error('Error fetching data:', error);
       });
-  };
+  }, [cursor, hasMore, keyword, start, end, guest]);
+
+  /**
+   * @description IntersectionObserver를 이용하여 스크롤 이벤트를 감지하여 무한 스크롤 구현
+   */
+  useEffect(() => {
+    if (observerRef.current) observerRef.current.disconnect();
+
+    observerRef.current = new IntersectionObserver(
+      (entries) => {
+        if (entries[0].isIntersecting && hasMore) {
+          loadMore();
+        }
+      },
+      { threshold: 1.0 },
+    );
+
+    if (lastElementRef.current) {
+      observerRef.current.observe(lastElementRef.current);
+    }
+
+    return () => {
+      if (observerRef.current) observerRef.current.disconnect();
+    };
+  }, [loadMore, hasMore]);
 
   return (
-    <InfiniteScroll pageStart={1} loadMore={loadMore} hasMore={hasMore}>
-      <Grid
-        templateColumns={{
-          mobile: 'repeat(1, 1fr)',
-          tablet: 'repeat(2, 1fr)',
-          desktop: 'repeat(4, 1fr)',
-        }}
-        gap="1.5rem">
-        {accommodations.map((accommodation, index) => (
-          <Box key={`${accommodation.id}-${index}`}>
+    <Grid
+      templateColumns={{
+        mobile: 'repeat(1, 1fr)',
+        tablet: 'repeat(2, 1fr)',
+        desktop: 'repeat(4, 1fr)',
+      }}
+      gap="1.5rem">
+      {accommodations.map((accommodation, index) => {
+        const isLastElement = accommodations.length === index + 1;
+        return (
+          <Box key={`${accommodation.id}-${index}`} ref={isLastElement ? lastElementRef : null}>
             <Box
               width="100%"
               height="100%"
@@ -92,22 +124,17 @@ const AccommodationList = ({ accommodation }: AccommodationListProps) => {
                     <Text fontSize="1.5rem" color="gray" paddingRight="2.8rem">
                       1박당 요금
                     </Text>
-                    <Flex flexDirection="column">
-                      <Text fontSize="2rem" color="red">
-                        {`${accommodation.price.toLocaleString('ko-KR', {
-                          style: 'decimal',
-                          currency: 'KRW',
-                        })}원`}
-                      </Text>
-                    </Flex>
+                    <Text fontSize="2rem" color="red">
+                      {`${accommodation.price.toLocaleString('ko-KR')}원`}
+                    </Text>
                   </Box>
                 </Box>
               </Link>
             </Box>
           </Box>
-        ))}
-      </Grid>
-    </InfiniteScroll>
+        );
+      })}
+    </Grid>
   );
 };
 
