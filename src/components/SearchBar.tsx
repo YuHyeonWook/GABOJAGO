@@ -11,21 +11,17 @@ import {
 import { useState, useRef, useEffect } from 'react';
 import { SearchIcon, ChevronDownIcon, AddIcon, MinusIcon } from '@chakra-ui/icons';
 import People from '../assets/people.svg?react';
-import Datepicker from './Datepicker';
-import { DropdownRef, DateState } from '@/lib/types/searchBar';
 import { useNavigate } from 'react-router-dom';
 
 const SearchBar = () => {
-  const [showDropdown, setShowDropdown] = useState(false);
-  const dropdownRef: DropdownRef = useRef<HTMLDivElement>(null);
-
-  const [keyword, setKeyword] = useState('');
-  const [startDate, setStartDate] = useState<DateState>(null);
-  const [endDate, setEndDate] = useState<DateState>(null);
-  const [guest, setGuest] = useState(2);
+  const [showDropdown, setShowDropdown] = useState<boolean>(false);
+  const dropdownRef = useRef<HTMLDivElement | null>(null);
+  const [keyword, setKeyword] = useState<string>('');
+  const [startDate, setStartDate] = useState<string>('');
+  const [endDate, setEndDate] = useState<string>('');
+  const [guest, setGuest] = useState<number>(2);
 
   const targetRef = useRef<HTMLDivElement | null>(null);
-
   const navigate = useNavigate();
 
   const toggleDropdown = () => {
@@ -46,22 +42,11 @@ const SearchBar = () => {
     }
   };
 
-  const handleClickSearchBtn = async () => {
-    const formattedDate = (date: DateState) => {
-      if (!date) return null;
-      const year = date.getFullYear();
-      const month = String(date.getMonth() + 1).padStart(2, '0');
-      const day = String(date.getDate()).padStart(2, '0');
-      return `${year}-${month}-${day}`;
-    };
-
-    const start = formattedDate(startDate);
-    const end = formattedDate(endDate);
-
+  const handleClickSearchBtn = () => {
     const query = new URLSearchParams({
       keyword,
-      start: start || '',
-      end: end || '',
+      start: startDate,
+      end: endDate,
       guest: guest.toString(),
     }).toString();
 
@@ -108,7 +93,7 @@ const SearchBar = () => {
   const datepickerWidth = useBreakpointValue({ base: '90vw', md: '27.8vw' });
   const guestWidth = useBreakpointValue({ base: '90vw', md: '18.1vw' });
   const buttonWidth = useBreakpointValue({ base: '90vw', md: '12.5vw' });
-  const inputFontSize = useBreakpointValue({ base: '1.2rem', md: '2rem' });
+  const inputFontSize = useBreakpointValue({ base: '1.2rem', md: '1.7rem' });
   const buttonFontSize = useBreakpointValue({ base: '2rem', md: '3rem' });
   const height = useBreakpointValue({ base: '5vh', md: '6.5vh' });
 
@@ -125,6 +110,7 @@ const SearchBar = () => {
                 <SearchIcon color="gray" w={7} h={7} />
               </InputLeftElement>
               <Input
+                type="text"
                 height={height}
                 padding="0 5.5rem"
                 border=".1rem solid var(--color-main)"
@@ -144,14 +130,27 @@ const SearchBar = () => {
               borderRadius=".8rem"
               backgroundColor="white">
               <Flex align="center" width="100%">
-                <Datepicker
-                  value={startDate ? startDate.toISOString().split('T')[0] : ''}
-                  onChange={(date) => setStartDate(date)}
-                  style={{ paddingRight: '3vw', borderRight: '.1rem solid var(--color-main)' }}
+                <Input
+                  type="date"
+                  value={startDate}
+                  onChange={(event) => setStartDate(event.target.value)}
+                  height={height}
+                  padding="0 3.5vw"
+                  border=".1rem solid var(--color-main)"
+                  borderRadius=".8rem"
+                  backgroundColor="white"
+                  fontSize={inputFontSize}
                 />
-                <Datepicker
-                  value={endDate ? endDate.toISOString().split('T')[0] : ''}
-                  onChange={(date) => setEndDate(date)}
+                <Input
+                  type="date"
+                  value={endDate}
+                  onChange={(e) => setEndDate(e.target.value)}
+                  height={height}
+                  padding="0 3.5vw"
+                  border=".1rem solid var(--color-main)"
+                  borderRadius=".8rem"
+                  backgroundColor="white"
+                  fontSize={inputFontSize}
                 />
               </Flex>
             </InputGroup>
@@ -161,6 +160,7 @@ const SearchBar = () => {
                 <People />
               </InputLeftElement>
               <Input
+                type="number"
                 height={height}
                 padding="0 3.5vw"
                 border=".1rem solid var(--color-main)"
