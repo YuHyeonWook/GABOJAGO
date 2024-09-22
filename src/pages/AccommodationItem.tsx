@@ -53,8 +53,8 @@ const AccommodationItem = () => {
     const accommodationIdNumber = parseInt(accommodationId ?? '0', 10);
     getAccommodationById(accommodationIdNumber)
       .then((response) => {
-        const { data } = response.data;
-        setAccommodations([data]);
+        const { content } = response.data.data;
+        setAccommodations(content);
       })
       .catch((error) => {
         const errorTime = new Date().toISOString();
