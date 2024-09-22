@@ -3,7 +3,7 @@ import { Box, Button, Flex } from '@chakra-ui/react';
 import Logo from '../assets/logo.svg?react';
 import emotionStyled from '@emotion/styled';
 import { useNavigate } from 'react-router-dom';
-import { fetchUserRegister } from '@/api/user/userApi';
+import { postUserRegister } from '@/api/user/userApi';
 import { handleKeyDown } from '@/utils/keyDownUtils';
 import {
   validateConfirmPassword,
@@ -43,7 +43,7 @@ const SignUp = () => {
       phone_number: phoneNumber,
     };
 
-    fetchUserRegister(payload)
+    postUserRegister(payload)
       .then((response) => {
         if (response.data.result_code === '200') {
           alert('회원가입이 정상적으로 처리되었습니다.');

@@ -3,7 +3,7 @@ import { Box, Button, Flex, Text } from '@chakra-ui/react';
 import Logo from '../assets/logo.svg?react';
 import emotionStyled from '@emotion/styled';
 import { useNavigate } from 'react-router-dom';
-import { fetchUserLogin } from '@/api/user/userApi';
+import { postUserLogin } from '@/api/user/userApi';
 import { handleKeyDown } from '@/utils/keyDownUtils';
 import { validateEmail, validatePassword } from '@/utils/inputValidationUtils';
 import { useAuth } from '@/lib/hooks/useAuth';
@@ -24,7 +24,7 @@ const SignIn = () => {
       password,
     };
 
-    fetchUserLogin(payload)
+    postUserLogin(payload)
       .then((response) => {
         if (response.data.result_code === '200') {
           alert('로그인 되었습니다');

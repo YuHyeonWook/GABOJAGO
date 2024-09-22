@@ -4,7 +4,7 @@ import { client } from '@/api/apiConfig';
  * 회원가입
  * @param payload {email, name, phone_number, password}
  */
-export const fetchUserRegister = (payload: { email: string; name: string; phone_number: string; password: string }) => {
+export const postUserRegister = (payload: { email: string; name: string; phone_number: string; password: string }) => {
   return client.post('/open-api/user/register', payload);
 };
 
@@ -12,7 +12,7 @@ export const fetchUserRegister = (payload: { email: string; name: string; phone_
  * 로그인
  * @param payload {email, password}
  */
-export const fetchUserLogin = (payload: { email: string; password: string }) => {
+export const postUserLogin = (payload: { email: string; password: string }) => {
   return client.post('/open-api/user/login', payload);
 };
 
@@ -21,7 +21,7 @@ export const fetchUserLogin = (payload: { email: string; password: string }) => 
  * @param username
  * @param phoneNumber
  */
-export const fetchUserFindId = async (username: string, phoneNumber: string) => {
+export const getUserFindId = async (username: string, phoneNumber: string) => {
   return client.get('/open-api/user/find-email', {
     params: {
       username,
@@ -34,7 +34,7 @@ export const fetchUserFindId = async (username: string, phoneNumber: string) => 
  * 패스워드 재설정
  * @param payload {email, password}
  */
-export const fetchUserResetPw = async (payload: { email: string; password: string }) => {
+export const putUserResetPw = async (payload: { email: string; password: string }) => {
   return client.put('/open-api/user/change-password', payload);
 };
 
@@ -42,7 +42,7 @@ export const fetchUserResetPw = async (payload: { email: string; password: strin
  * 프로필사진 등록
  * @param formData
  */
-export const fetchUserImgPost = async (formData: FormData) => {
+export const postUserImgupload = async (formData: FormData) => {
   return client.post('api/user/my-page/image/upload', formData);
 };
 
@@ -51,7 +51,7 @@ export const fetchUserImgPost = async (formData: FormData) => {
  * @param formData
  * @param params {oldImageUrl}
  */
-export const fetchUserImgPut = async (formData: FormData, oldImageUrl: string) => {
+export const PutUserImg = async (formData: FormData, oldImageUrl: string) => {
   return client.put('/api/user/my-page/image/update', formData, {
     params: {
       oldImageUrl: oldImageUrl,
@@ -63,6 +63,6 @@ export const fetchUserImgPut = async (formData: FormData, oldImageUrl: string) =
  * 휴대폰번호 재설정
  * @param payload {phone_number}
  */
-export const fetchUserEditPhoneNumber = async (payload: { phone_number: string }) => {
+export const putUserEditPhoneNumber = async (payload: { phone_number: string }) => {
   return client.put('/api/user/my-page/change-phone-number', payload, {});
 };
