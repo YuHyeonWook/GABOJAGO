@@ -1,17 +1,19 @@
 import { client } from '@/api/apiConfig';
+import { OrderResponse } from '@/lib/types/order';
+import { AxiosResponse } from 'axios';
 
 /**
  * 주문하기
  * @param orderData
  */
-export const createOrder = async (orderData: {
+export const postOrder = async (orderData: {
   requestOrderList: {
     id: number;
     startDate: string;
     endDate: string;
   }[];
   totalPrice: number;
-}) => {
+}): Promise<AxiosResponse<OrderResponse>> => {
   try {
     const response = await client.post('/api/order', orderData);
     return response;
@@ -25,7 +27,7 @@ export const createOrder = async (orderData: {
  * 단일 주문 확인
  * @param orderId
  */
-export const getOrderById = async (orderId: number) => {
+export const getOrderById = async (orderId: number): Promise<AxiosResponse<OrderResponse>> => {
   try {
     return await client.get(`/api/order/${orderId}`);
   } catch (error) {
@@ -37,7 +39,7 @@ export const getOrderById = async (orderId: number) => {
 /**
  *  전체 주문내역 확인
  */
-export const getOrderHistory = async () => {
+export const getOrderHistory = async (): Promise<AxiosResponse<OrderResponse>> => {
   try {
     const response = await client.get('/api/order');
     return response.data;

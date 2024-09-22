@@ -11,7 +11,13 @@ import { AxiosResponse } from 'axios';
  * @param count
  * @returns
  */
-export const getAccommodation = async (cursor: number, keyword: string, start: string, end: string, count: number) => {
+export const getAccommodation = async (
+  cursor: number,
+  keyword: string,
+  start: string,
+  end: string,
+  count: number,
+): Promise<AxiosResponse<AccommodationResponse>> => {
   return client.get('/open-api/accommodation', {
     params: {
       cursor,

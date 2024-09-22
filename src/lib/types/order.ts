@@ -36,3 +36,7 @@ export type Rooms = {
   endDate?: string;
   startDate?: string;
 };
+
+export type OrderResponse = {
+  data: OrderData;
+};

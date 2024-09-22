@@ -4,7 +4,7 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import OrderDetails from '@/components/OrderDetails';
 import { CustomCheckboxProps } from '@/lib/types/customCheckbox';
 import { selectedCartRooms } from '@/lib/types/order';
-import { createOrder } from '@/api/order/orderApi';
+import { postOrder } from '@/api/order/orderApi';
 
 const CustomCheckbox = ({ onChange, ...props }: CustomCheckboxProps) => {
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -67,7 +67,7 @@ const Order = () => {
             ? selectedCartRooms.reduce((accumulator, current) => accumulator + current.room.roomPrice, 0)
             : selectedBookingRoom.roomPrice;
 
-        const response = await createOrder({ requestOrderList, totalPrice });
+        const response = await postOrder({ requestOrderList, totalPrice });
 
         navigate(`/order/payment/${response.data.data.id}`);
       } catch (error) {
