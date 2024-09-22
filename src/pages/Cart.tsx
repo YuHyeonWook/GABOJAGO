@@ -11,7 +11,7 @@ const Cart = () => {
   const [checkSelectedRooms, setCheckSelectedRooms] = useState<CartItems[]>([]);
   const [cartRooms, setCartRooms] = useState<CartItems[]>([]);
   const [isAllSelected, setIsAllSelected] = useState<boolean>(false);
-  const removeCart = useCartStore((state) => state.removeCart);
+  const removeCart = useCartStore<(cartId: number) => void>((state) => state.removeCart);
 
   useEffect(() => {
     getCartItems()

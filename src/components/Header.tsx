@@ -5,6 +5,7 @@ import { useState, useRef, useEffect } from 'react';
 import { useCartStore } from '@/store/cartStore';
 import { useAuth } from '@/lib/hooks/useAuth';
 import { DropdownRef } from '@/lib/types/searchBar';
+import { CartItems } from '@/lib/types/cart';
 
 const Header = () => {
   const { user, logout } = useAuth();
@@ -12,7 +13,7 @@ const Header = () => {
   const dropdownRef: DropdownRef = useRef<HTMLDivElement>(null);
   const navigate = useNavigate();
   const targetRef = useRef<HTMLDivElement | null>(null);
-  const cartRooms = useCartStore((state) => state.cartRooms);
+  const cartRooms = useCartStore<CartItems[]>((state) => state.cartRooms);
 
   const handleUserNameClick = () => {
     setShowDropdown((prevState) => !prevState);

@@ -18,7 +18,7 @@ const Home = () => {
   const location = useLocation();
 
   useEffect(() => {
-    const fetchFilteredData = async () => {
+    const fetchFilteredData = async (): Promise<void> => {
       const query = new URLSearchParams(location.search);
       const keyword = query.get('keyword') || '';
       const start = query.get('start') || '';
