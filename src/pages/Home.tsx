@@ -4,7 +4,7 @@ import SearchBar from '@/components/SearchBar';
 import Slider from 'react-slick';
 import { useEffect, useState } from 'react';
 import axios from 'axios';
-import { Accommodation } from '@/lib/types/accommodation';
+import { Accommodation, AccommodationResponse } from '@/lib/types/accommodation';
 import { useLocation } from 'react-router-dom';
 import AccommodationList from '@/components/AccommodationList';
 import banner1 from '@/assets/images/banner1.webp';
@@ -27,7 +27,7 @@ const Home = () => {
 
       try {
         const url = `http://ec2-43-203-40-90.ap-northeast-2.compute.amazonaws.com/open-api/accommodation`;
-        const response = await axios.get(url, {
+        const response = await axios.get<AccommodationResponse>(url, {
           params: { keyword, start, end, guest },
         });
 
@@ -35,11 +35,11 @@ const Home = () => {
           setAccommodationData(response.data.data.content);
         } else {
           console.error('Unexpected API response structure', response.data);
-          setAccommodationData([]); // 기본 값으로 빈 배열 설정
+          setAccommodationData([]);
         }
       } catch (error) {
         console.error('검색어 필터링 오류', error);
-        setAccommodationData([]); // 오류 발생 시 기본 값으로 빈 배열 설정
+        setAccommodationData([]);
       }
     };
     fetchFilteredData();

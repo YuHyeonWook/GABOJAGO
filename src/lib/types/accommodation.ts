@@ -42,5 +42,7 @@ export type RoomListResponse = {
 };
 
 export type AccommodationResponse = {
-  data: Accommodation;
+  data: {
+    content: Accommodation[];
+  };
 };
