@@ -8,7 +8,7 @@ import { useAuth } from '@/lib/hooks/useAuth';
 
 const Header = () => {
   const { user, logout } = useAuth();
-  const [showDropdown, setShowDropdown] = useState(false);
+  const [showDropdown, setShowDropdown] = useState<boolean>(false);
   const dropdownRef: DropdownRef = useRef<HTMLDivElement>(null);
   const navigate = useNavigate();
   const targetRef = useRef<HTMLDivElement | null>(null);

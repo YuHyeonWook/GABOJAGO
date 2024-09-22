@@ -30,7 +30,7 @@ const CartItem = ({
       });
   }, []);
 
-  const handleDeleteCartRoom = async (cartItemId: number) => {
+  const handleDeleteCartRoom = async (cartItemId: number): Promise<void> => {
     try {
       await deleteCartItems(cartItemId);
       removeCart(cartItemId);
