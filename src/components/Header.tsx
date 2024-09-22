@@ -2,9 +2,9 @@ import { Box, Flex, Heading, Button, Spacer, Text, Popover, PopoverTrigger, Popo
 import Logo from '@/assets/logo.svg?react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useState, useRef, useEffect } from 'react';
-import { DropdownRef } from '@/lib/types/searchBar';
 import { useCartStore } from '@/store/cartStore';
 import { useAuth } from '@/lib/hooks/useAuth';
+import { DropdownRef } from '@/lib/types/searchBar';
 
 const Header = () => {
   const { user, logout } = useAuth();
