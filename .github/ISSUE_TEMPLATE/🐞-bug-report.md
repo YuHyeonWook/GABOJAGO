@@ -3,7 +3,7 @@ name: "\U0001F41E Bug Report"
 about: Something went awry and you'd like to tell us about it. If this doesn't look
   right, choose a different type.
 title: ''
-labels: bug
+labels: ''
 assignees: ''
 
 ---
