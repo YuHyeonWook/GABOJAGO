@@ -13,19 +13,6 @@
 
 <br>
 
-```
-🌟 게스트 아이디 🌟
-ID : guest@email.com
-PW : qqqq1111
-```
-
-<br>
-
-```
-
-🎯 작업 Organization Repo : https://github.com/mini-team1/FE_mini
-```
-
 ## 팀원 소개 및 분담
 
 | <p align='center'>김여진B<p>                                                                                                                                                                                                                        | <p align='center'>유현욱<p>                                                                                                    | <p align='center'>이진영</p>                                                                                                          |
