@@ -15,7 +15,7 @@ const CartItem = ({
   cartRooms,
 }: CartItemProps) => {
   const navigate = useNavigate();
-  const removeCart = useCartStore((state) => state.removeCart);
+  const removeCart = useCartStore<(cartItemId: number) => void>((state) => state.removeCart);
 
   /**
    * 장바구니에 담긴 상품 조회
@@ -30,7 +30,7 @@ const CartItem = ({
       });
   }, []);
 
-  const handleDeleteCartRoom = async (cartItemId: number) => {
+  const handleDeleteCartRoom = async (cartItemId: number): Promise<void> => {
     try {
       await deleteCartItems(cartItemId);
       removeCart(cartItemId);

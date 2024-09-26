@@ -9,9 +9,9 @@ import { getCartItems, deleteCartItems } from '@/api/cart/cartItemsApi';
 
 const Cart = () => {
   const [checkSelectedRooms, setCheckSelectedRooms] = useState<CartItems[]>([]);
-  const [cartRooms, setCartRooms] = useState<CartItems[]>([]); // 장바구니 추가한 객실은 해당 state
+  const [cartRooms, setCartRooms] = useState<CartItems[]>([]);
   const [isAllSelected, setIsAllSelected] = useState<boolean>(false);
-  const removeCart = useCartStore((state) => state.removeCart);
+  const removeCart = useCartStore<(cartId: number) => void>((state) => state.removeCart);
 
   useEffect(() => {
     getCartItems()
@@ -60,14 +60,11 @@ const Cart = () => {
   /**
    * 선택된 모든 객실을 삭제하는 함수
    */
-  const handleAllDeleteSelectedRooms = async () => {
+  const handleAllDeleteSelectedRooms = async (): Promise<void> => {
     try {
-      // 선택된 객실을 삭제하는 api 호출
       const deletePromises = checkSelectedRooms.map((room) => deleteCartItems(room.cart_item_id));
       await Promise.all(deletePromises);
-      // 선택한 객실을 전역 상태에서도 삭제 하도록 removeCart 함수 호출
       checkSelectedRooms.forEach((checkSlectedRoom) => removeCart(checkSlectedRoom.cart_item_id));
-      // 선택한 객실을 필터링하여 장바구니 상태를 업데이트한다.
       setCartRooms((prevCartRooms) =>
         prevCartRooms.filter(
           (room) =>

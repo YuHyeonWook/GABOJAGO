@@ -3,19 +3,19 @@ import Logo from '../assets/logo.svg?react';
 import emotionStyled from '@emotion/styled';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { fetchUserFindId } from '@/api/user/userApi';
+import { getUserFindId } from '@/api/user/userApi';
 import { handleKeyDown } from '@/utils/keyDownUtils';
 
 const FindId = () => {
-  const [phoneNumber, setPhoneNumber] = useState('');
-  const [username, setUsername] = useState('');
-  const [email, setEmail] = useState('');
-  const [error, setError] = useState('');
+  const [phoneNumber, setPhoneNumber] = useState<string>('');
+  const [username, setUsername] = useState<string>('');
+  const [email, setEmail] = useState<string>('');
+  const [error, setError] = useState<string>('');
 
   const navigate = useNavigate();
 
-  const handleSubmit = async () => {
-    fetchUserFindId(username, phoneNumber)
+  const handleSubmit = async (): Promise<void> => {
+    getUserFindId(username, phoneNumber)
       .then((response) => {
         setEmail(response.data.data);
         setError('');

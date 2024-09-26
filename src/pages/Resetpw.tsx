@@ -3,7 +3,7 @@ import Logo from '@/assets/logo.svg?react';
 import emotionStyled from '@emotion/styled';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { fetchUserResetPw } from '@/api/user/userApi';
+import { putUserResetPw } from '@/api/user/userApi';
 import { handleKeyDown } from '@/utils/keyDownUtils';
 
 const Resetpw = () => {
@@ -34,7 +34,7 @@ const Resetpw = () => {
       password,
     };
 
-    fetchUserResetPw(payload)
+    putUserResetPw(payload)
       .then((response) => {
         if (response.data.result_code === '200') {
           alert('패스워드가 정상적으로 변경되었습니다.');

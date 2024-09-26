@@ -2,7 +2,7 @@ import { Box, Button, Flex, Input, Text } from '@chakra-ui/react';
 import emotionStyled from '@emotion/styled';
 import { useRef, useState } from 'react';
 import { User } from '@/lib/types/authStore';
-import { fetchUserEditPhoneNumber, fetchUserImgPost, fetchUserImgPut, fetchUserResetPw } from '@/api/user/userApi';
+import { putUserEditPhoneNumber, postUserImgupload, PutUserImg, putUserResetPw } from '@/api/user/userApi';
 import { handleKeyDown } from '@/utils/keyDownUtils';
 import { validatePhoneNumber } from '@/utils/inputValidationUtils';
 import { useAuth } from '@/lib/hooks/useAuth';
@@ -30,7 +30,7 @@ const Mypage = () => {
       };
 
       try {
-        const response = await fetchUserEditPhoneNumber(payload);
+        const response = await putUserEditPhoneNumber(payload);
         if (response.data.result_code === '200') {
           alert('정상적으로 변경되었습니다.');
           login({ ...user, phone_number: editPhoneNumber } as User);
@@ -54,7 +54,7 @@ const Mypage = () => {
       };
 
       try {
-        const response = await fetchUserResetPw(payload);
+        const response = await putUserResetPw(payload);
         if (response.data.result_code === '200') {
           alert('정상적으로 변경되었습니다.');
         }
@@ -104,9 +104,9 @@ const Mypage = () => {
       let response;
 
       if (oldImageUrl && oldImageUrl !== 'undefined') {
-        response = await fetchUserImgPut(formData, oldImageUrl);
+        response = await PutUserImg(formData, oldImageUrl);
       } else {
-        response = await fetchUserImgPost(formData);
+        response = await postUserImgupload(formData);
       }
 
       if (response?.data.result_code === '200') {
